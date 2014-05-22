@@ -110,7 +110,7 @@ sourceSets {
     
         exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
         manifest {
-            attributes 'Implementation-Title': 'Gradle springKata',
+            attributes 'Implementation-Title': 'springKata',
             'Implementation-Version': version,
             'Built-By': System.getProperty('user.name'),
             'Built-Date': new Date(),
