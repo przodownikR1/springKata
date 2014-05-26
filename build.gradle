@@ -91,6 +91,7 @@ sourceSets {
         testCompile("org.easytesting:fest-assert:${festAssertVersion}")
         testCompile("com.googlecode.catch-exception:catch-exception:1.2.0")
         testCompile ("org.springframework:spring-test:${springVersion}")
+        testCompile ("org.spockframework:spock-core:0.7-groovy-2.0")
        
     }
    
