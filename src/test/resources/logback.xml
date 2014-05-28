@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="USER_HOME" value="/home/przodownik" />
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+
+	<!-- To enable JMX Management -->
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%.-1level|%-40.40logger{0}|%msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="console2" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}:%L - %msg \(login: %X{login}\) %n</pattern>
+        </encoder>
+    </appender>
+	
+
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${USER_HOME}/log/springExample.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${USER_HOME}/log/logs/springExample_%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>	
+
+	<appender name="FILEHTML" class="ch.qos.logback.core.FileAppender">
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="ch.qos.logback.classic.html.HTMLLayout">
+				<pattern>%relative%thread%mdc%level%logger%msg</pattern>
+			</layout>
+		</encoder>
+		<file>test.html</file>
+	</appender>
+	<!-- 
+ 	<appender name="sheriff" class="ch.qos.logback.classic.net.SMTPAppender">
+        <smtpHost>localhost</SMTPHost>
+        <from>sheriff@mycompany.com</From>
+        <to>john@mycompany.com</To>
+        <subject>Something went wrong</Subject>
+        <layout class="ch.qos.logback.classic.html.HTMLLayout"/>
+ 
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+     -->
+   
+   <!--  <appender name="DB" class="ch.qos.logback.access.db.DBAppender">
+                <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+                        <driverClass>com.mysql.jdbc.Driver</driverClass>
+                        <url>jdbc:mysql://localhost:3306/logbackdb</url>
+                        <user>logback</user>
+                        <password>logback</password>
+                </connectionSource>
+                <insertHeaders>true</insertHeaders>
+        </appender> -->
+
+    
+
+
+	<!-- <appender name="DB" class="ch.qos.logback.classic.db.DBAppender"> <connectionSource 
+		class="ch.qos.logback.core.db.DriverManagerConnectionSource"> <driverClass>com.mysql.jdbc.Driver</driverClass> 
+		<url>jdbc:mysql://localhost:3306/poc2</url> <user>slawek</user> <password>slawek</password> 
+		</connectionSource> </appender> -->
+
+
+	<logger name="org.mortbay.log" level="INFO" />
+
+	<logger name="org.springframework" level="debug" additivity="false">
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger name="org.java.scalatech" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<root level="info">
+		<appender-ref ref="console" />
+		
+		
+	</root>
+</configuration>
