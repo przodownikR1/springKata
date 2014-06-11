@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans profile="amq" xmlns="http://www.springframework.org/schema/beans"
+         xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xmlns:amq="http://activemq.apache.org/schema/core"
+    	xmlns:jms="http://www.springframework.org/schema/jms"
+        xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+         http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+		
+		<import resource="classpath:dao.xml" />
+	  
+
+	    <amq:broker useJmx="true" id="broker" persistent="true" persistenceAdapter="#persistenceAdapter">
+	   
+		<amq:managementContext>
+            <amq:managementContext connectorPort="46732" jmxDomainName="froundJmxQueue"/>
+        </amq:managementContext>
+         <amq:plugins>
+                        
+                        <amq:loggingBrokerPlugin />
+         </amq:plugins>
+       <amq:transportConnectors>
+               <amq:transportConnector name="openwire" uri="tcp://localhost:61616" />
+       </amq:transportConnectors>
+       
+       <amq:systemUsage>
+            <amq:systemUsage>
+                <amq:memoryUsage>
+                    <amq:memoryUsage limit="5 mb" />
+                </amq:memoryUsage>
+            </amq:systemUsage>
+        </amq:systemUsage>
+      </amq:broker>   
+      
+      
+       
+      <bean id="persistenceAdapter" class="org.apache.activemq.store.jdbc.JDBCPersistenceAdapter"
+		p:useDatabaseLock="false" p:dataDirectory="fround"
+		p:createTablesOnStartup="true" p:dataSource-ref="dataSource" />  
+        
+      <amq:queue id="queueA" physicalName="queueA" />
+
+      
+      <amq:connectionFactory  id="jmsFactory"  brokerURL="vm://localhost:61616"/> 
+		
+	
+     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate" p:connectionFactory-ref="cachedConnectionFactory"  p:defaultDestination-ref="queueA"  />
+
+     <bean id="messageListener" class="pl.java.scalatech.jms.QueueReceiver"/>
+    
+    <bean id="cachedConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+               <property name="targetConnectionFactory" ref="jmsFactory" />
+               <property name="sessionCacheSize" value="3" />
+    </bean>
+      
+    <beans profile="mdb">       
+      <bean id="consumerMDB" class="org.springframework.jms.listener.DefaultMessageListenerContainer" p:concurrentConsumers="1" p:connectionFactory-ref="jmsFactory"
+        p:destination-ref="queueA" p:messageListener-ref="messageListener" p:sessionTransacted="true"/> 
+    </beans>
+    
+ </beans>

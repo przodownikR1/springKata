@@ -84,6 +84,12 @@ sourceSets {
         compile("org.slf4j:slf4j-api:$slf4jVersion")
         runtime("ch.qos.logback:logback-classic:$logbackVersion")
         compile("ch.qos.logback:logback-core:$logbackVersion")
+        
+        
+        compile("org.apache.activemq:activemq-core:5.7.0")
+        compile("org.apache.activemq:activemq-spring:5.9.1")
+        compile("org.apache.xbean:xbean-spring:3.18")
+        compile("org.springframework:spring-jms:${springVersion}")
     
         testCompile("org.hamcrest:hamcrest-all:$hamcrestVersion")
         testCompile("org.mockito:mockito-all:$mockitoVersion")
