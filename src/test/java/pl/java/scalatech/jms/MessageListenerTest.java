@@ -24,8 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class MessageListenerTest {
     @Autowired
     private JmsTemplate jmsTemplate;
-    @Autowired
-    private Destination inbox;
+   
     @Test
     public void shouldReply(){
         jmsTemplate.send(new MessageCreator() {
@@ -34,10 +33,7 @@ public class MessageListenerTest {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage("spring test message ");
                 message.setIntProperty("MESSAGE_SPRING", 1);
-                message.setJMSPriority(6);
-                message.setJMSCorrelationID("return_");
-                
-                message.setJMSReplyTo(inbox);
+            
                 return message;
             }
         });

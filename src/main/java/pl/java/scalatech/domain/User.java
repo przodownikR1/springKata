@@ -1,7 +1,5 @@
 package pl.java.scalatech.domain;
 
-import org.springframework.context.annotation.Configuration;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

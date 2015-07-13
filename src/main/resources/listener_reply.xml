@@ -26,11 +26,10 @@
 
    <bean id="messageListener" class="pl.java.scalatech.jms.AwareMessageListener"/>
    
-    <jms:listener-container concurrency="3-8">
-        <jms:listener ref="messageListener"  destination="queueA"  />
+   
+    <jms:listener-container concurrency="2">
+        <jms:listener ref="messageListener"  destination="queueA"  />    
     </jms:listener-container>
-    
-  
-
+ 
 
  </beans>
